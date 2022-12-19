@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,11 +45,6 @@ public class AccessoryServiceImpl implements AccessoryService {
     @Override
     public List<Accessory> findAllAccessories() {
         return accessoryRepository.findAll();
-    }
-
-    @Override
-    public List<Accessory> getAllSortedAccessories(String sortBy) {
-        return null;
     }
 
     @Override

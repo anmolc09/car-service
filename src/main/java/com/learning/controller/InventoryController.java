@@ -13,16 +13,16 @@ public interface InventoryController {
     @GetMapping
     List<Inventory> findAllInventories();
     @PostMapping
-    void createInventory(@RequestBody Inventory inventory);
+    String createInventory(@RequestBody Inventory inventory);
     @PutMapping
     String updateInventoryById(@PathVariable Long id,@RequestBody Inventory inventory);
     @DeleteMapping("/{id}")
-    void deleteInventoryById(@PathVariable Long id);
+    String deleteInventoryById(@PathVariable Long id);
     @DeleteMapping("/delete-all")
-    void deleteAllInventories();
+    String deleteAllInventories();
     @PostMapping("/excel")
-    void saveInventoriesFromExcel();
+    String saveInventoriesFromExcel();
    @GetMapping("/excel")
-    void writeInventoriesIntoExcel();
+    String writeInventoriesIntoExcel();
 
 }

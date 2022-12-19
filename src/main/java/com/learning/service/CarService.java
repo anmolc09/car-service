@@ -4,7 +4,6 @@ import com.learning.entities.Car;
 import com.learning.entities.Inventory;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CarService {
 

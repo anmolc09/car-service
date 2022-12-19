@@ -36,33 +36,39 @@ public class CarControllerImpl implements CarController {
     }
 
     @Override
-    public void createCar(Car car) {
+    public String createCar(Car car) {
         carService.createCar(car);
+        return "Car created successfully";
     }
 
     @Override
-    public void updateCarById(Long id, Car car) {
+    public String updateCarById(Long id, Car car) {
         carService.updateCarById(id, car);
+        return String.format("updated car with id: %s ", id);
     }
 
     @Override
-    public void deleteCarById(Long id) {
+    public String deleteCarById(Long id) {
             carService.deleteCarById(id);
+            return String.format("Deleted car by id: %s", id);
     }
 
     @Override
-    public void deleteAllCars() {
+    public String deleteAllCars() {
         carService.deleteAllCars();
+        return "Deleted all Cars";
     }
 
     @Override
-    public void saveCarsFromExcel() {
+    public String saveCarsFromExcel() {
         carService.saveCarsFromExcel();
+        return "Cars added to Database";
     }
 
     @Override
-    public void writeCarsIntoExcel() {
+    public String writeCarsIntoExcel() {
         carService.writeCarsIntoExcel();
+        return "Cars  added to excel";
     }
 
 }

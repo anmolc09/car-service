@@ -3,7 +3,6 @@ package com.learning.service;
 import com.learning.entities.Inventory;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InventoryService {
     Inventory findInventoryById(long id);

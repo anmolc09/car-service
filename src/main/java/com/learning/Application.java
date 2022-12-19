@@ -1,6 +1,5 @@
 package com.learning;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
-public class RevCarServiceApplication  {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RevCarServiceApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@Bean

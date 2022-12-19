@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class CarWriter {
 
-    public void createCarsheet(Workbook workbook, List<Car> carList) throws IOException {
+    public void createCarSheet(Workbook workbook, List<Car> carList) throws IOException {
         String[] headers = {"Id", "Name", "Brand", "Model No.", "Inventory Id"};
 
         // create a Sheet
@@ -78,9 +78,9 @@ public class CarWriter {
     }
 
     private static void createHeaderRow(String[] headers, Sheet sheet, CellStyle headerCellStyle) {
-        // create header row
+
         Row headerRow = sheet.createRow(0);
-        //  create header cells
+
         for(int index = 0; index < headers.length; index++) {
             Cell headerCell = headerRow.createCell(index);
             headerCell.setCellValue(headers[index]);
@@ -89,13 +89,12 @@ public class CarWriter {
     }
 
     private static CellStyle getHeaderCellStyle(Workbook workbook) {
-        // create font for styling header cells
+
         Font headerFont = workbook.createFont();
         headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 12);
         headerFont.setColor(IndexedColors.LIGHT_BLUE.getIndex());
 
-        // create a cellstyle with font
         CellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
         headerCellStyle.setFont(headerFont);

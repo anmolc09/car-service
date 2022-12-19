@@ -5,31 +5,26 @@ import com.learning.entities.Car;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/accessory")
 public interface AccessoryController {
 
     @GetMapping("/{id}")
     Accessory findAccessoryById(@PathVariable Long id);
-
     @GetMapping("/car-by-accessory/{id}")
     Car findCarById(@PathVariable Long id);
     @GetMapping
     List<Accessory> findAllAccessories();
-    @GetMapping("/sort")
-    List<Accessory> getAllSortedAccessories(@RequestParam(value ="sortBy", required = false, defaultValue = "") String sortBy);
     @PostMapping
-    void createAccessory(@RequestBody Accessory accessory);
+    String createAccessory(@RequestBody Accessory accessory);
     @PutMapping
-    void updateAccessoryById(@PathVariable Long id,@RequestBody Accessory accessory);
+    String updateAccessoryById(@PathVariable Long id,@RequestBody Accessory accessory);
     @DeleteMapping
-    void deleteAccessoryById(@PathVariable Long id);
+    String deleteAccessoryById(@PathVariable Long id);
     @DeleteMapping("/delete-all")
-    void deleteAllAccessories();
+    String deleteAllAccessories();
     @PostMapping("/excel")
-    void saveAccessoriesFromExcel();
+    String saveAccessoriesFromExcel();
     @GetMapping("/excel")
-    void writeAccessoriesIntoExcel();
-
+    String writeAccessoriesIntoExcel();
 }

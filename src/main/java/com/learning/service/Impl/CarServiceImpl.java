@@ -116,7 +116,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void writeCarsIntoExcel() {
         try{
-            carWriter.createCarsheet(xssfWorkbook, findAllCars());
+            carWriter.createCarSheet(xssfWorkbook, findAllCars());
         }catch(IOException exception) {
             log.error(exception.getMessage());
         }

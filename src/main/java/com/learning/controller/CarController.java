@@ -5,7 +5,6 @@ import com.learning.entities.Inventory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/car")
 public interface CarController {
@@ -19,17 +18,17 @@ public interface CarController {
     @GetMapping("/sort")
     List<Car> findAllSortedCars(@RequestParam(value ="sortBy", required = false, defaultValue = "") String sortBy);
     @PostMapping
-    void createCar(@RequestBody Car car);
+    String createCar(@RequestBody Car car);
     @PutMapping
-    void updateCarById(@PathVariable Long id, @RequestBody Car car);
+    String updateCarById(@PathVariable Long id, @RequestBody Car car);
     @DeleteMapping
-    void deleteCarById(@PathVariable Long id);
+    String deleteCarById(@PathVariable Long id);
     @DeleteMapping("/delete-all")
-    void deleteAllCars();
+    String deleteAllCars();
 
-    //TODO: enhance with multipart api in future
+    // TODO: enhance with multipart api in future
     @PostMapping("/excel")
-    void saveCarsFromExcel();
+    String saveCarsFromExcel();
     @GetMapping("/excel")
-    void writeCarsIntoExcel();
+    String writeCarsIntoExcel();
 }

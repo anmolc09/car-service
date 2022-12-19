@@ -4,8 +4,8 @@ import com.learning.controller.AccessoryController;
 import com.learning.entities.Accessory;
 import com.learning.entities.Car;
 import com.learning.service.AccessoryService;
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,38 +32,40 @@ public class AccessoryControllerImpl implements AccessoryController {
     }
 
     @Override
-    public List<Accessory> getAllSortedAccessories(String sortBy) {
-        return accessoryService.getAllSortedAccessories(sortBy);
-    }
-
-    @Override
-    public void createAccessory(Accessory accessory) {
+    public String createAccessory(Accessory accessory) {
         accessoryService.createAccessory(accessory);
+        return "Accessory added successfully";
     }
 
     @Override
-    public void updateAccessoryById(Long id, Accessory accessory) {
+    public String updateAccessoryById(Long id, Accessory accessory) {
         accessoryService.updateAccessoryById(id, accessory);
+        return "Updated Successfully";
     }
 
     @Override
-    public void deleteAccessoryById(Long id) {
+    public String deleteAccessoryById(Long id) {
+
         accessoryService.deleteAccessoryById(id);
+        return "Deleted Accessory";
     }
 
     @Override
-    public void deleteAllAccessories() {
+    public String deleteAllAccessories() {
         accessoryService.deleteAllAccessories();
+        return "All Accessories Deleted";
     }
 
     @Override
-    public void saveAccessoriesFromExcel() {
+    public String saveAccessoriesFromExcel() {
         accessoryService.saveAccessoriesFromExcel();
+        return "Accessories saved in database";
     }
 
     @Override
-    public void writeAccessoriesIntoExcel() {
+    public String writeAccessoriesIntoExcel() {
         accessoryService.writeAccessoriesIntoExcel();
+        return "Accessories added in excel";
     }
 }
 
