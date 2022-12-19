@@ -5,6 +5,7 @@ import com.learning.controller.AccessoryController;
 import com.learning.entities.Accessory;
 import com.learning.entities.Car;
 import com.learning.exceptions.AccessoryNotFoundException;
+import com.learning.exceptions.CarNotFoundException;
 import com.learning.service.AccessoryService;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,9 @@ public class AccessoryControllerImpl implements AccessoryController {
     }
 
     @Override
-    public Optional<Car> findCarById(Long id) {
-        return Optional.empty();
+    public Car findCarById(Long id) {
+        return accessoryService.findCarById(id)
+                .orElseThrow(() -> new CarNotFoundException(String.format(ExceptionMessage.CAR_NOT_FOUND,id)));
     }
 
     @Override
@@ -46,8 +48,8 @@ public class AccessoryControllerImpl implements AccessoryController {
     }
 
     @Override
-    public Optional<Accessory> updateAccessoryById(Long id, Accessory accessory) {
-        return Optional.empty();
+    public void updateAccessoryById(Long id, Accessory accessory) {
+        accessoryService.updateAccessoryById(id, accessory);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class AccessoryControllerImpl implements AccessoryController {
 
     @Override
     public void writeAccessoriesIntoExcel() {
-
+        accessoryService.writeAccessoriesIntoExcel();
     }
 }
 

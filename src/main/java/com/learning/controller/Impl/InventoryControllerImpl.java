@@ -5,6 +5,7 @@ import com.learning.controller.InventoryController;
 import com.learning.entities.Inventory;
 import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.service.Impl.InventoryServiceImpl;
+import com.learning.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InventoryControllerImpl implements InventoryController {
 
-    private final InventoryServiceImpl inventoryService;
+    private final InventoryService inventoryService;
 
     @Override
     public Inventory findInventoryById(long id) {
@@ -57,6 +58,6 @@ public class InventoryControllerImpl implements InventoryController {
 
     @Override
     public void writeInventoriesIntoExcel() {
-
+        inventoryService.writeInventoriesIntoExcel();
     }
 }

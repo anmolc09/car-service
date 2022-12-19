@@ -4,7 +4,6 @@ import com.learning.entities.Inventory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/inventory")
 public interface InventoryController {
@@ -19,7 +18,7 @@ public interface InventoryController {
     String updateInventoryById(@PathVariable Long id,@RequestBody Inventory inventory);
     @DeleteMapping("/{id}")
     void deleteInventoryById(@PathVariable Long id);
-    @DeleteMapping
+    @DeleteMapping("/delete-all")
     void deleteAllInventories();
     @PostMapping("/excel")
     void saveInventoriesFromExcel();

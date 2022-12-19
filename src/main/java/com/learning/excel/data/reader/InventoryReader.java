@@ -45,15 +45,9 @@ public class InventoryReader {
                 } else if (index2 == 1) {
                     inventory.setLocation(cell.getStringCellValue());
                 } else if (index2 == 2) {
-                    if (cell.getStringCellValue().equalsIgnoreCase("EXTERNAL")) {
-                        inventory.setType(InventoryType.EXTERNAL);
-                    } else if (cell.getStringCellValue().equalsIgnoreCase("INTERNAL")) {
-                        inventory.setType(InventoryType.INTERNAL);
-                    } else {
-                        inventory.setType(null);
-                    }
+                    inventory.setType(InventoryType.valueOf(cell.getStringCellValue()));
                 } else {
-                    log.error("Data not found " + row.getLastCellNum());
+                    log.error("Data not found ");
                 }
             }
             inventoryList.add(inventory);

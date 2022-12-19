@@ -5,10 +5,12 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Data
 @Builder
+@Table(name = "accessory")
 public class Accessory {
     @Id
     private Long id;

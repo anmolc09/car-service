@@ -21,10 +21,10 @@ public interface CarController {
     @PostMapping
     void createCar(@RequestBody Car car);
     @PutMapping
-    Optional<Car> updateCarById(@PathVariable Long id, @RequestBody Car car);
+    void updateCarById(@PathVariable Long id, @RequestBody Car car);
     @DeleteMapping
     void deleteCarById(@PathVariable Long id);
-    @DeleteMapping
+    @DeleteMapping("/delete-all")
     void deleteAllCars();
     @PostMapping("/excel")
     void saveCarsFromExcel();

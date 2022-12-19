@@ -12,7 +12,7 @@ public interface CarService {
     List<Car> findAllCars();
     List<Car> findAllSortedCars(String sortBy);
     void createCar(Car car);
-    Optional<Car> updateCarById(Long id, Car car);
+    void updateCarById(Long id, Car car);
     void deleteCarById(Long id);
     void deleteAllCars();
     Optional<Inventory> findInventoryById(long id);

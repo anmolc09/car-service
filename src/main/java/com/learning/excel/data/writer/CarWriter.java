@@ -15,58 +15,44 @@ import java.util.List;
 @Slf4j
 public class CarWriter {
 
-    @Autowired
-    private CarReader carReader;
+    public void createCarsheet(Workbook workbook, List<Car> carList) throws IOException {
+        String[] headers = {"Id", "Name", "Brand", "Model No.", "Inventory Id"};
 
-    public void createCarSheet(Workbook workbook) throws IOException {
-
-        String[] headers = {"Id", "Name", "Brand", "Model No.", "Inventory id"};
-
-        List<Car> carList = null;
-
-        try{
-            carList = carReader.getCarObjects();
-        }catch(Exception e){
-            log.error(e.getMessage(), e);
-        }
-
-
-        CreationHelper creationHelper = workbook.getCreationHelper();
-
+        // create a Sheet
         Sheet sheet = workbook.createSheet("Car");
 
-        Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short)14);
-        headerFont.setColor(IndexedColors.BLUE.getIndex());
+        // method call for headerCell styling
+        CellStyle headerCellStyle = getHeaderCellStyle(workbook);
 
-        CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
-        headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
-        headerCellStyle.setFillForegroundColor((short) 13);
-        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerCellStyle.setBorderTop(BorderStyle.THIN);
-        headerCellStyle.setBorderBottom(BorderStyle.THIN);
-        headerCellStyle.setBorderLeft(BorderStyle.THIN);
-        headerCellStyle.setBorderRight(BorderStyle.THIN);
+        // method call for header row creation
+        createHeaderRow(headers, sheet, headerCellStyle);
 
-        Row headerRow = sheet.createRow(0);
+        // method call for data rows creation
+        createDataRows(carList, workbook, sheet);
 
-        for (int i=0; i < headers.length; i++){
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers[i]);
-            cell.setCellStyle(headerCellStyle);
+        // Resize all columns to fit the content size
+        for(int index = 0; index < headers.length; index++) {
+            sheet.autoSizeColumn(index);
         }
 
+        FileOutputStream fileOutputStream = new FileOutputStream(".\\resources\\poi-data.xlsx");
+        workbook.write(fileOutputStream);
+
+        fileOutputStream.close();
+
+    }
+
+    private static void createDataRows(List<Car> carList, Workbook workbook, Sheet sheet) {
         CellStyle dataCellStyle = workbook.createCellStyle();
         dataCellStyle.setAlignment(HorizontalAlignment.CENTER);
-        dataCellStyle.setBorderTop(BorderStyle.THIN);
+        dataCellStyle.setFillForegroundColor((short) 22);
+        dataCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         dataCellStyle.setBorderBottom(BorderStyle.THIN);
+        dataCellStyle.setBorderTop(BorderStyle.THIN);
         dataCellStyle.setBorderLeft(BorderStyle.THIN);
         dataCellStyle.setBorderRight(BorderStyle.THIN);
 
         for(int rowNum = 0; rowNum < carList.size(); rowNum++) {
-
             Row row = sheet.createRow(rowNum + 1);
 
             Cell zeroCell = row.createCell(0);
@@ -85,23 +71,41 @@ public class CarWriter {
             thirdCell.setCellValue(carList.get(rowNum).getModelNo());
             thirdCell.setCellStyle(dataCellStyle);
 
-            Cell forthCell = row.createCell(4);
-            forthCell.setCellValue(carList.get(rowNum).getInventoryId());
-            forthCell.setCellStyle(dataCellStyle);
+            Cell fourthCell = row.createCell(4);
+            fourthCell.setCellValue(carList.get(rowNum).getInventoryId());
+            fourthCell.setCellStyle(dataCellStyle);
         }
-
-        // Resize all columns to fit the content size
-        for(int index = 0; index < headers.length; index++) {
-            sheet.autoSizeColumn(index);
-        }
-
-
-        FileOutputStream fileOut = new FileOutputStream(".\\resources\\copy-data.xlsx");
-        workbook.write(fileOut);
-        fileOut.close();
-
-
     }
 
+    private static void createHeaderRow(String[] headers, Sheet sheet, CellStyle headerCellStyle) {
+        // create header row
+        Row headerRow = sheet.createRow(0);
+        //  create header cells
+        for(int index = 0; index < headers.length; index++) {
+            Cell headerCell = headerRow.createCell(index);
+            headerCell.setCellValue(headers[index]);
+            headerCell.setCellStyle(headerCellStyle);
+        }
+    }
 
+    private static CellStyle getHeaderCellStyle(Workbook workbook) {
+        // create font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 12);
+        headerFont.setColor(IndexedColors.LIGHT_BLUE.getIndex());
+
+        // create a cellstyle with font
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor((short) 13);
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+
+        return headerCellStyle;
+    }
 }

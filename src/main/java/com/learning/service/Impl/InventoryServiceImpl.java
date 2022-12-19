@@ -1,11 +1,14 @@
 package com.learning.service.Impl;
 
+import com.learning.constants.ExceptionMessage;
 import com.learning.entities.Inventory;
 import com.learning.excel.data.reader.InventoryReader;
+import com.learning.excel.data.writer.InventoryWriter;
 import com.learning.repository.InventoryRepository;
 import com.learning.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +22,8 @@ public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepository;
     private final InventoryReader inventoryReader;
+    private final InventoryWriter writer;
+    private final XSSFWorkbook xssfWorkbook;
     @Override
     public Optional<Inventory> findInventoryById(long id)  {
         return inventoryRepository.findById(id);
@@ -34,13 +39,24 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Optional<Inventory> updateInventoryById(Long id, Inventory inventory) {
-        return Optional.empty();
+    public void updateInventoryById(Long id, Inventory inventory) {
+        if(inventoryRepository.existsById(id)) {
+        inventoryRepository.save(inventory);
+        log.info(String.format("Successfully update Inventory with id %s", id));
+         } else {
+                 log.error(String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id));
+        }
     }
+
 
     @Override
     public void deleteInventoryById(Long id) {
-        inventoryRepository.deleteById(id);
+        if(inventoryRepository.existsById(id)) {
+            inventoryRepository.deleteById(id);
+            log.info(String.format("Successfully update Inventory with id %s", id));
+        } else {
+            log.error(String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id));
+        }
     }
 
     @Override
@@ -61,6 +77,10 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void writeInventoriesIntoExcel() {
-
+        try {
+            writer.createInventorysheet(xssfWorkbook, findAllInventories());
+        } catch(IOException exception) {
+            log.error(exception.getMessage());
+        }
     }
 }

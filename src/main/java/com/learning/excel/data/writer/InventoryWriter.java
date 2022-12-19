@@ -16,58 +16,46 @@ import java.util.List;
 @Service
 public class InventoryWriter {
 
-    @Autowired
-    private InventoryReader inventoryReader;
 
-    public void createInventorySheet(Workbook workbook) throws IOException {
-
+    public void createInventorysheet(Workbook workbook, List<Inventory> inventoryList) throws IOException {
         String[] headers = {"Id", "Location", "Type"};
 
-        List<Inventory> inventoryList = null;
 
-        try{
-            inventoryList = inventoryReader.getInventoryObjects();
-        }catch(Exception e){
-            log.error(e.getMessage(), e);
-        }
-
-
-        CreationHelper creationHelper = workbook.getCreationHelper();
-
+        // create a Sheet
         Sheet sheet = workbook.createSheet("Inventory");
 
-        Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short)14);
-        headerFont.setColor(IndexedColors.BLUE.getIndex());
+        // method call for headerCell styling
+        CellStyle headerCellStyle = getHeaderCellStyle(workbook);
 
-        CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFont(headerFont);
-        headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
-        headerCellStyle.setFillForegroundColor((short) 13);
-        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerCellStyle.setBorderTop(BorderStyle.THIN);
-        headerCellStyle.setBorderBottom(BorderStyle.THIN);
-        headerCellStyle.setBorderLeft(BorderStyle.THIN);
-        headerCellStyle.setBorderRight(BorderStyle.THIN);
+        // method call for header row creation
+        createHeaderRow(headers, sheet, headerCellStyle);
 
-        Row headerRow = sheet.createRow(0);
+        // method call for data rows creation
+        createDataRows(inventoryList, workbook, sheet);
 
-        for (int i=0; i < headers.length; i++){
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers[i]);
-            cell.setCellStyle(headerCellStyle);
+        // Resize all columns to fit the content size
+        for(int index = 0; index < headers.length; index++) {
+            sheet.autoSizeColumn(index);
         }
 
+        FileOutputStream fileOutputStream = new FileOutputStream(".\\resources\\poi-data.xlsx");
+        workbook.write(fileOutputStream);
+
+        fileOutputStream.close();
+
+    }
+
+    private static void createDataRows(List<Inventory> inventoryList, Workbook workbook, Sheet sheet) {
         CellStyle dataCellStyle = workbook.createCellStyle();
         dataCellStyle.setAlignment(HorizontalAlignment.CENTER);
-        dataCellStyle.setBorderTop(BorderStyle.THIN);
+        dataCellStyle.setFillForegroundColor((short) 22);
+        dataCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         dataCellStyle.setBorderBottom(BorderStyle.THIN);
+        dataCellStyle.setBorderTop(BorderStyle.THIN);
         dataCellStyle.setBorderLeft(BorderStyle.THIN);
         dataCellStyle.setBorderRight(BorderStyle.THIN);
 
         for(int rowNum = 0; rowNum < inventoryList.size(); rowNum++) {
-
             Row row = sheet.createRow(rowNum + 1);
 
             Cell zeroCell = row.createCell(0);
@@ -79,44 +67,39 @@ public class InventoryWriter {
             firstCell.setCellStyle(dataCellStyle);
 
             Cell secondCell = row.createCell(2);
-            if(inventoryList.get(rowNum).getType().equals(InventoryType.EXTERNAL)) {
-                secondCell.setCellValue("EXTERNAL");
-            } else if(inventoryList.get(rowNum).getType().equals(InventoryType.INTERNAL)) {
-                secondCell.setCellValue("INTERNAL");
-            } else {
-                secondCell.setCellValue("");
-            }
+            secondCell.setCellValue(inventoryList.get(rowNum).getType().toString());
             secondCell.setCellStyle(dataCellStyle);
         }
-
-     /*   int rowNum = 1;
-
-        for (Inventory inventory : inventoryList) {
-            Row row = sheet.createRow(rowNum++);
-
-            row.createCell(0)
-                    .setCellValue(inventory.getId());
-
-            row.createCell(1)
-                    .setCellValue(inventory.getLocation());
-
-            if (inventory.getType().("Internal"))
-            row.createCell(2)
-                    .setCellValue(inventory.getType());
-
-        }*/
-
-        // Resize all columns to fit the content size
-        for(int index = 0; index < headers.length; index++) {
-            sheet.autoSizeColumn(index);
-        }
-
-
-        FileOutputStream fileOut = new FileOutputStream(".\\resources\\copy-data.xlsx");
-        workbook.write(fileOut);
-        fileOut.close();
-        workbook.close();
-
     }
 
-}
+    private static void createHeaderRow(String[] headers, Sheet sheet, CellStyle headerCellStyle) {
+        // create row
+        Row headerRow = sheet.createRow(0);
+        //  create cells
+        for(int index = 0; index < headers.length; index++) {
+            Cell headerCell = headerRow.createCell(index);
+            headerCell.setCellValue(headers[index]);
+            headerCell.setCellStyle(headerCellStyle);
+        }
+    }
+
+    private static CellStyle getHeaderCellStyle(Workbook workbook) {
+        // create font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 12);
+        headerFont.setColor(IndexedColors.LIGHT_BLUE.getIndex());
+
+        // create a cellstyle with font
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerCellStyle.setFont(headerFont);
+        headerCellStyle.setFillForegroundColor((short) 13);
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerCellStyle.setBorderBottom(BorderStyle.THIN);
+        headerCellStyle.setBorderTop(BorderStyle.THIN);
+        headerCellStyle.setBorderLeft(BorderStyle.THIN);
+        headerCellStyle.setBorderRight(BorderStyle.THIN);
+
+        return headerCellStyle;
+    }}

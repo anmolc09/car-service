@@ -8,15 +8,9 @@ import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.constants.ExceptionMessage;
 import com.learning.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,24 +37,7 @@ public class CarControllerImpl implements CarController {
 
     @Override
     public List<Car> findAllSortedCars(String sortBy) {
-
-            Comparator<Car> comparator;
-            switch (sortBy) {
-                case "name" :
-                    comparator = (car1, car2) -> car1.getName().compareTo(car2.getName());
-                    break;
-                case "modelNo":
-                    comparator = (car1, car2) -> car1.getModelNo().compareTo(car2.getModelNo());
-                    break;
-                case "brand":
-                    comparator= (car1, car2) -> car1.getBrand().compareTo(car2.getBrand());
-                    break;
-                default:
-                    comparator = (car1, car2) -> car1.getId().compareTo(car2.getId());
-            }
-            return carService.findAllCars().stream()
-                    .sorted(comparator)
-                    .collect(Collectors.toList());
+        return carService.findAllSortedCars(sortBy);
     }
 
     @Override
@@ -69,8 +46,8 @@ public class CarControllerImpl implements CarController {
     }
 
     @Override
-    public Optional<Car> updateCarById(Long id, Car car) {
-        return Optional.empty();
+    public void updateCarById(Long id, Car car) {
+        carService.updateCarById(id, car);
     }
 
     @Override
@@ -86,12 +63,12 @@ public class CarControllerImpl implements CarController {
 
     @Override
     public void saveCarsFromExcel() {
-        carService.writeCarsIntoExcel();
+        carService.saveCarsFromExcel();
     }
 
     @Override
     public void writeCarsIntoExcel() {
-
+        carService.writeCarsIntoExcel();
     }
 
 }

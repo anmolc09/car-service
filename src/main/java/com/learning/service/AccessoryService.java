@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface AccessoryService {
 
     Optional<Accessory> findAccessoryById(long id);
-    Optional<Car> findCarByAccessoryId(long id);
+    Optional<Car> findCarById(long id);
     List<Accessory> findAllAccessories();
     List<Accessory> getAllSortedAccessories(String sortBy);
     void createAccessory(Accessory accessory);
-    Optional<Accessory> updateAccessoryById(Long id, Accessory accessory);
+    void updateAccessoryById(Long id, Accessory accessory);
     void deleteAccessoryById(Long id);
     void deleteAllAccessories();
     void saveAccessoriesFromExcel();

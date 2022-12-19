@@ -4,6 +4,7 @@ import com.learning.constants.ExceptionMessage;
 import com.learning.entities.Accessory;
 import com.learning.entities.Car;
 import com.learning.excel.data.reader.AccessoryReader;
+import com.learning.excel.data.writer.AccessoryWriter;
 import com.learning.exceptions.AccessoryNotFoundException;
 import com.learning.exceptions.CarNotFoundException;
 import com.learning.repository.AccessoryRepository;
@@ -11,6 +12,7 @@ import com.learning.service.AccessoryService;
 import com.learning.service.CarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,6 +27,8 @@ public class AccessoryServiceImpl implements AccessoryService {
     private final AccessoryRepository accessoryRepository;
     private final CarService carService;
     private final AccessoryReader accessoryReader;
+    private final AccessoryWriter writer;
+    private final XSSFWorkbook xssfWorkbook;
 
     @Override
     public Optional<Accessory> findAccessoryById(long id) {
@@ -32,7 +36,7 @@ public class AccessoryServiceImpl implements AccessoryService {
     }
 
     @Override
-    public Optional<Car> findCarByAccessoryId(long id) {
+    public Optional<Car> findCarById(long id) {
         return  Optional.ofNullable(carService.findCarById(findAccessoryById(id)
                 .orElseThrow(() -> new AccessoryNotFoundException(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND,id)))
                 .getCarId())
@@ -55,19 +59,23 @@ public class AccessoryServiceImpl implements AccessoryService {
     }
 
     @Override
-    public Optional<Accessory> updateAccessoryById(Long id, Accessory accessory) {
-      /*  if(accessoryRepository.existsById(id)) {
+    public void updateAccessoryById(Long id, Accessory accessory) {
+        if(accessoryRepository.existsById(id)) {
             accessoryRepository.save(accessory);
             log.info(String.format("Successfully update Accessory with id %s", id));
         } else {
             log.error(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND, id));
-        }*/
-        return Optional.empty();
+        }
     }
 
     @Override
     public void deleteAccessoryById(Long id) {
-        accessoryRepository.deleteById(id);
+        if(accessoryRepository.existsById(id)) {
+            accessoryRepository.deleteById(id);
+            log.info(String.format("Successfully deleted Accessory with id %s", id));
+        } else {
+            log.error(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND, id));
+        }
     }
 
     @Override
@@ -89,6 +97,10 @@ public class AccessoryServiceImpl implements AccessoryService {
 
     @Override
     public void writeAccessoriesIntoExcel() {
-
+        try{
+            writer.createAccessorySheet(xssfWorkbook,findAllAccessories());
+        } catch(IOException exception){
+            log.error(exception.getMessage());
+        }
     }
 }

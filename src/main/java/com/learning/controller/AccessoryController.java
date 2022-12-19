@@ -14,7 +14,7 @@ public interface AccessoryController {
     Accessory findAccessoryById(@PathVariable Long id);
 
     @GetMapping("/car-by-accessory/{id}")
-    Optional<Car> findCarById(@PathVariable Long id);
+    Car findCarById(@PathVariable Long id);
     @GetMapping
     List<Accessory> findAllAccessories();
     @GetMapping("/sort")
@@ -22,10 +22,10 @@ public interface AccessoryController {
     @PostMapping
     void createAccessory(@RequestBody Accessory accessory);
     @PutMapping
-    Optional<Accessory> updateAccessoryById(@PathVariable Long id,@RequestBody Accessory accessory);
+    void updateAccessoryById(@PathVariable Long id,@RequestBody Accessory accessory);
     @DeleteMapping
     void deleteAccessoryById(@PathVariable Long id);
-    @DeleteMapping
+    @DeleteMapping("/delete-all")
     void deleteAllAccessories();
     @PostMapping("/excel")
     void saveAccessoriesFromExcel();

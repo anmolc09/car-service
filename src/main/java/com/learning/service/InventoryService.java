@@ -9,7 +9,7 @@ public interface InventoryService {
     Optional<Inventory> findInventoryById(long id);
     List<Inventory> findAllInventories();
     void createInventory(Inventory inventory);
-    Optional<Inventory> updateInventoryById(Long id, Inventory inventory);
+    void updateInventoryById(Long id, Inventory inventory);
     void deleteInventoryById(Long id);
     void deleteAllInventories();
     void saveInventoriesFromExcel();
