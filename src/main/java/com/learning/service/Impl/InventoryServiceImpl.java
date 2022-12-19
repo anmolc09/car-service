@@ -4,6 +4,7 @@ import com.learning.constants.ExceptionMessage;
 import com.learning.entities.Inventory;
 import com.learning.excel.data.reader.InventoryReader;
 import com.learning.excel.data.writer.InventoryWriter;
+import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.repository.InventoryRepository;
 import com.learning.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,9 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryWriter writer;
     private final XSSFWorkbook xssfWorkbook;
     @Override
-    public Optional<Inventory> findInventoryById(long id)  {
-        return inventoryRepository.findById(id);
+    public Inventory findInventoryById(long id)  {
+        return inventoryRepository.findById(id)
+                .orElseThrow(() -> new InventoryNotFoundException(String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id)));
     }
     @Override
     public List<Inventory> findAllInventories() {
@@ -42,7 +44,7 @@ public class InventoryServiceImpl implements InventoryService {
     public void updateInventoryById(Long id, Inventory inventory) {
         if(inventoryRepository.existsById(id)) {
         inventoryRepository.save(inventory);
-        log.info(String.format("Successfully update Inventory with id %s", id));
+        log.info(String.format("Successfully updated Inventory with id %s", id));
          } else {
                  log.error(String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id));
         }
@@ -53,7 +55,7 @@ public class InventoryServiceImpl implements InventoryService {
     public void deleteInventoryById(Long id) {
         if(inventoryRepository.existsById(id)) {
             inventoryRepository.deleteById(id);
-            log.info(String.format("Successfully update Inventory with id %s", id));
+            log.info(String.format("Successfully deleted Inventory with id %s", id));
         } else {
             log.error(String.format(ExceptionMessage.INVENTORY_NOT_FOUND, id));
         }

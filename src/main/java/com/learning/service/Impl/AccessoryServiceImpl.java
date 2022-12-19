@@ -31,16 +31,14 @@ public class AccessoryServiceImpl implements AccessoryService {
     private final XSSFWorkbook xssfWorkbook;
 
     @Override
-    public Optional<Accessory> findAccessoryById(long id) {
-        return accessoryRepository.findById(id);
+    public Accessory findAccessoryById(long id) {
+        return accessoryRepository.findById(id)
+                .orElseThrow(() -> new AccessoryNotFoundException(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND,id)));
     }
 
     @Override
-    public Optional<Car> findCarById(long id) {
-        return  Optional.ofNullable(carService.findCarById(findAccessoryById(id)
-                .orElseThrow(() -> new AccessoryNotFoundException(String.format(ExceptionMessage.ACCESSORY_NOT_FOUND,id)))
-                .getCarId())
-                .orElseThrow(() -> new CarNotFoundException(String.format(ExceptionMessage.CAR_NOT_FOUND,id))));
+    public Car findCarById(long id) {
+        return  carService.findCarById(findAccessoryById(id).getCarId());
     }
 
     @Override

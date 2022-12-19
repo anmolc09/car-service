@@ -8,14 +8,14 @@ import java.util.Optional;
 
 public interface CarService {
 
-    Optional<Car> findCarById(long id);
+    Car findCarById(long id);
     List<Car> findAllCars();
     List<Car> findAllSortedCars(String sortBy);
     void createCar(Car car);
     void updateCarById(Long id, Car car);
     void deleteCarById(Long id);
     void deleteAllCars();
-    Optional<Inventory> findInventoryById(long id);
+    Inventory findInventoryById(long id);
     void saveCarsFromExcel();
     void writeCarsIntoExcel();
 

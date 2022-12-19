@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface AccessoryService {
 
-    Optional<Accessory> findAccessoryById(long id);
-    Optional<Car> findCarById(long id);
+    Accessory findAccessoryById(long id);
+    Car findCarById(long id);
     List<Accessory> findAllAccessories();
     List<Accessory> getAllSortedAccessories(String sortBy);
     void createAccessory(Accessory accessory);

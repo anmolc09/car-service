@@ -9,7 +9,7 @@ import java.util.List;
 public interface InventoryController {
 
     @GetMapping("/{id}")
-    Inventory findInventoryById(long id);
+    Inventory findInventoryById(Long id);
     @GetMapping
     List<Inventory> findAllInventories();
     @PostMapping

@@ -26,6 +26,8 @@ public interface CarController {
     void deleteCarById(@PathVariable Long id);
     @DeleteMapping("/delete-all")
     void deleteAllCars();
+
+    //TODO: enhance with multipart api in future
     @PostMapping("/excel")
     void saveCarsFromExcel();
     @GetMapping("/excel")

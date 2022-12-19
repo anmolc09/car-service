@@ -6,7 +6,6 @@ import com.learning.entities.Inventory;
 import com.learning.excel.data.reader.CarReader;
 import com.learning.excel.data.writer.CarWriter;
 import com.learning.exceptions.CarNotFoundException;
-import com.learning.exceptions.InventoryNotFoundException;
 import com.learning.repository.CarRepository;
 import com.learning.service.CarService;
 import com.learning.service.InventoryService;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -38,8 +36,9 @@ public class CarServiceImpl implements CarService {
     private final XSSFWorkbook xssfWorkbook;
 
     @Override
-    public Optional<Car> findCarById(long id) {
-        return carRepository.findById(id);
+    public Car findCarById(long id) {
+        return carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException(String.format(ExceptionMessage.CAR_NOT_FOUND, id)));
     }
 
     public List<Car> findAllCars() {
@@ -99,11 +98,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<Inventory> findInventoryById(long id) {
-        return Optional.ofNullable(inventoryService.findInventoryById(findCarById(id)
-                .orElseThrow(() -> new CarNotFoundException(ExceptionMessage.CAR_NOT_FOUND + id))
-                .getInventoryId())
-                .orElseThrow(() -> new InventoryNotFoundException(ExceptionMessage.INVENTORY_NOT_FOUND + id)));
+    public Inventory findInventoryById(long id) {
+        return inventoryService.findInventoryById(findCarById(id).getInventoryId());
     }
 
     @Override

@@ -3,9 +3,6 @@ package com.learning.controller.Impl;
 import com.learning.controller.CarController;
 import com.learning.entities.Car;
 import com.learning.entities.Inventory;
-import com.learning.exceptions.CarNotFoundException;
-import com.learning.exceptions.InventoryNotFoundException;
-import com.learning.constants.ExceptionMessage;
 import com.learning.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +17,12 @@ public class CarControllerImpl implements CarController {
 
     @Override
     public Inventory findInventoryById(Long id) {
-        return carService.findInventoryById(id)
-                .orElseThrow(() -> new InventoryNotFoundException(String.format(ExceptionMessage.INVENTORY_NOT_FOUND,id)));
+        return carService.findInventoryById(id);
     }
 
     @Override
     public Car findCarById(Long id) {
-        return carService.findCarById(id)
-                .orElseThrow(() ->new CarNotFoundException(String.format(ExceptionMessage.CAR_NOT_FOUND,id)));
+        return carService.findCarById(id);
     }
 
     @Override
@@ -58,7 +53,6 @@ public class CarControllerImpl implements CarController {
     @Override
     public void deleteAllCars() {
         carService.deleteAllCars();
-
     }
 
     @Override
