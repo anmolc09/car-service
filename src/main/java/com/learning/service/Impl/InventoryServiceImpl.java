@@ -50,7 +50,6 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-
     @Override
     public void deleteInventoryById(Long id) {
         if(inventoryRepository.existsById(id)) {

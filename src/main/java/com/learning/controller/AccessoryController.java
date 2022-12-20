@@ -2,29 +2,69 @@ package com.learning.controller;
 
 import com.learning.entities.Accessory;
 import com.learning.entities.Car;
+import com.learning.service.AccessoryService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
+@RestController
 @RequestMapping("/accessory")
-public interface AccessoryController {
+@RequiredArgsConstructor
+public class AccessoryController {
 
+    private final AccessoryService accessoryService;
     @GetMapping("/{id}")
-    Accessory findAccessoryById(@PathVariable Long id);
+    public Accessory findAccessoryById(@PathVariable Long id) {
+        return accessoryService.findAccessoryById(id);
+    }
+
     @GetMapping("/car-by-accessory/{id}")
-    Car findCarById(@PathVariable Long id);
+    public Car findCarById(@PathVariable Long id) {
+        return accessoryService.findCarById(id);
+    }
+
     @GetMapping
-    List<Accessory> findAllAccessories();
+    public List<Accessory> findAllAccessories() {
+        return accessoryService.findAllAccessories();
+    }
+
     @PostMapping
-    String createAccessory(@RequestBody Accessory accessory);
+    public String createAccessory(@RequestBody Accessory accessory) {
+        accessoryService.createAccessory(accessory);
+        return "Accessory added successfully";
+    }
+
     @PutMapping
-    String updateAccessoryById(@PathVariable Long id,@RequestBody Accessory accessory);
+    public String updateAccessoryById(@PathVariable Long id, @RequestBody Accessory accessory) {
+        accessoryService.updateAccessoryById(id, accessory);
+        return "Updated Successfully";
+    }
+
     @DeleteMapping
-    String deleteAccessoryById(@PathVariable Long id);
+    public String deleteAccessoryById(@PathVariable Long id) {
+        accessoryService.deleteAccessoryById(id);
+        return "Deleted Accessory";
+    }
+
     @DeleteMapping("/delete-all")
-    String deleteAllAccessories();
+    public String deleteAllAccessories() {
+        accessoryService.deleteAllAccessories();
+        return "All Accessories Deleted";
+    }
+
     @PostMapping("/excel")
-    String saveAccessoriesFromExcel();
+    public String saveAccessoriesFromExcel() {
+        accessoryService.saveAccessoriesFromExcel();
+        return "Accessories saved in database";
+    }
+
     @GetMapping("/excel")
-    String writeAccessoriesIntoExcel();
+    public String writeAccessoriesIntoExcel() {
+        accessoryService.writeAccessoriesIntoExcel();
+        return "Accessories added in excel";
+    }
 }
+

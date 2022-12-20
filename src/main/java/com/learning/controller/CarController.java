@@ -2,33 +2,75 @@ package com.learning.controller;
 
 import com.learning.entities.Car;
 import com.learning.entities.Inventory;
+import com.learning.service.CarService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/car")
-public interface CarController {
+public class CarController {
+
+    private final CarService carService;
 
     @GetMapping("/inventory-by-car/{id}")
-    Inventory findInventoryById(@PathVariable Long id );
+    public Inventory findInventoryById(@PathVariable Long id) {
+        return carService.findInventoryById(id);
+    }
+
     @GetMapping("/{id}")
-    Car findCarById(@PathVariable Long id);
+    public Car findCarById(@PathVariable Long id) {
+        return carService.findCarById(id);
+    }
+
     @GetMapping("/all-cars")
-    List<Car> findAllCars();
+    public List<Car> findAllCars() {
+        return carService.findAllCars();
+    }
+
     @GetMapping("/sort")
-    List<Car> findAllSortedCars(@RequestParam(value ="sortBy", required = false, defaultValue = "") String sortBy);
+    public List<Car> findAllSortedCars(@RequestParam(value ="sortBy", required = false, defaultValue = "") String sortBy) {
+        return carService.findAllSortedCars(sortBy);
+    }
+
     @PostMapping
-    String createCar(@RequestBody Car car);
+    public String createCar(@RequestBody Car car) {
+        carService.createCar(car);
+        return "Car created successfully";
+    }
+
     @PutMapping
-    String updateCarById(@PathVariable Long id, @RequestBody Car car);
+    public String updateCarById(@PathVariable Long id, @RequestBody Car car) {
+        carService.updateCarById(id, car);
+        return String.format("updated car with id: %s ", id);
+    }
+
     @DeleteMapping
-    String deleteCarById(@PathVariable Long id);
-    @DeleteMapping("/delete-all")
-    String deleteAllCars();
+    public String deleteCarById(@PathVariable Long id) {
+            carService.deleteCarById(id);
+            return String.format("Deleted car by id: %s", id);
+    }
 
     // TODO: enhance with multipart api in future
+    @DeleteMapping("/delete-all")
+    public String deleteAllCars() {
+        carService.deleteAllCars();
+        return "Deleted all Cars";
+    }
+
     @PostMapping("/excel")
-    String saveCarsFromExcel();
+    public String saveCarsFromExcel() {
+        carService.saveCarsFromExcel();
+        return "Cars added to Database";
+    }
+
     @GetMapping("/excel")
-    String writeCarsIntoExcel();
+    public String writeCarsIntoExcel() {
+        carService.writeCarsIntoExcel();
+        return "Cars  added to excel";
+    }
+
 }
+
